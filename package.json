@@ -1,0 +1,75 @@
+{
+  "name": "node-like",
+  "version": "0.0.1",
+  "description": "An implementation of the basic Node W3C standard.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "jest",
+    "test-coverage": "jest --coverage",
+    "test-watch": "jest --watch",
+    "test-coverage-watch": "jest --watch --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/furkleindustries/node-like.git"
+  },
+  "keywords": [
+    "node",
+    "node-like",
+    "nodelike",
+    "virtual document",
+    "document",
+    "element",
+    "DOM"
+  ],
+  "author": "furkle",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/furkleindustries/node-like/issues"
+  },
+  "homepage": "https://github.com/furkleindustries/node-like#readme",
+  "devDependencies": {
+    "@types/css": "0.0.31",
+    "@types/esprima": "^4.0.1",
+    "@types/jest": "^21.1.8",
+    "@types/node": "^8.0.54",
+    "awesome-typescript-loader": "^3.4.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.3",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-typescript": "^7.0.0-beta.3",
+    "jest": "^21.2.1",
+    "ts-jest": "^21.2.4",
+    "typescript": "^2.6.2",
+    "webpack": "^3.9.1"
+  },
+  "dependencies": {
+    "immutable": "^3.8.2",
+    "nwmatcher": "^1.4.3",
+    "twine-tree": "0.0.4",
+    "void-elements": "^3.1.0"
+  },
+  "jest": {
+    "mapCoverage": true,
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/*.test.js"
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/*"
+    ]
+  }
+}
