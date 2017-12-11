@@ -1,6 +1,6 @@
 {
   "name": "node-like",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "An implementation of the basic Node W3C standard.",
   "main": "index.js",
   "scripts": {
