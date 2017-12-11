@@ -48,9 +48,9 @@
     "webpack": "^3.9.1"
   },
   "dependencies": {
+    "htmlparser": "^1.7.7",
     "immutable": "^3.8.2",
     "nwmatcher": "^1.4.3",
-    "twine-tree": "0.0.4",
     "void-elements": "^3.1.0"
   },
   "jest": {

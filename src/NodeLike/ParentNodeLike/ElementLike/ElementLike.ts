@@ -29,11 +29,10 @@ import {
   nodeFactory,
 } from '../../../modules/nodeFactory';
 import {
-  parse as parseHtml,
-} from '../../../../node_modules/twine-tree/src/Parsers/HtmlParser';
-import {
-  TAbstractSyntaxContent,
-} from '../../../../node_modules/twine-tree/src/AbstractSyntaxTree/TAbstractSyntaxContent';
+  TAbstractNode,
+} from '../../../TypeAliases/TAbstractNode';
+
+const htmlparser = require('htmlparser');
 
 export class ElementLike extends AbstractElementLike {
   get nodeType(): 1 {
@@ -69,9 +68,13 @@ export class ElementLike extends AbstractElementLike {
       this.removeChild(node);
     });
 
-    (<Array<TAbstractSyntaxContent>>parseHtml(html)).forEach((content: TAbstractSyntaxContent) => {
-      this.appendChild(nodeFactory(content, this.ownerDocument));
+    const parser = new htmlparser.Parser(new htmlparser.DefaultHandler());
+    parser.parseComplete(html);
+    const nodes = parser._handler.dom.map((abstractNode: TAbstractNode) => {
+      return nodeFactory(abstractNode, this.ownerDocument);
     });
+
+    this.append(...nodes);
   }
 
   get outerHTML(): string {
@@ -79,8 +82,10 @@ export class ElementLike extends AbstractElementLike {
   }
 
   set outerHTML(html: string) {
-    const nodes = parseHtml(html).map((content: TAbstractSyntaxContent) => {
-      return nodeFactory(content, this.ownerDocument);
+    const parser = new htmlparser.Parser(new htmlparser.DefaultHandler());
+    parser.parseComplete(html);
+    const nodes = parser._handler.dom.map((abstractNode: TAbstractNode) => {
+      return nodeFactory(abstractNode, this.ownerDocument);
     });
 
     this.replaceWith(...nodes);

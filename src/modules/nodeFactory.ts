@@ -8,35 +8,64 @@ import {
   TextLike,
 } from '../NodeLike/CharacterDataLike/TextLike/TextLike';
 import {
-  TIndexableObject,
-} from '../TypeAliases/TIndexableObject';
+  TAbstractNode,
+} from '../TypeAliases/TAbstractNode';
 
 export function nodeFactory(
-  value: string | TIndexableObject,
+  value: string | TAbstractNode,
   document: IDocumentLike): INonDocumentTypeChildNodeLike
 {
   if (typeof value === 'string') {
     return new TextLike(value, document);
-  } /* TODO: Add other node types here. */
+  } else if (value.type === 'text') {
+    return new TextLike(value.data, document);
+  } else if (value.type === 'tag') {
+    const element = document.createElement(<string>value.name);
+    const attributes = value.attribs;
+    if (Array.isArray(attributes)) {
+      attributes.forEach((attr: { [key: string]: string }) => {
+        element.setAttribute(attr.key, attr.value);
+      });
+    }
 
-  const element = document.createElement(value.tagName);
-  const attributes = value.attributes;
-  if (Array.isArray(attributes)) {
-    attributes.forEach((attr: TIndexableObject) => {
-      element.setAttribute(attr.key, attr.value);
-    });
+    const children = value.children;
+    if (Array.isArray(children)) {
+      const childNodes = children.map((child: TAbstractNode) => {
+        return nodeFactory(child, document);
+      });
+
+      element.append(...childNodes);
+    }
+
+    return element;
+  } else if (value.type === 'script') {
+    const element = document.createElement('script');
+    const attributes = value.attribs;
+    if (Array.isArray(attributes)) {
+      attributes.forEach((attr: { [key: string]: string }) => {
+        element.setAttribute(attr.key, attr.value);
+      });
+    }
+
+    element.textContent = value.data;
+    return element;
+  } else if (value.type === 'style') {
+    const element = document.createElement('style');
+    const attributes = value.attribs;
+    if (Array.isArray(attributes)) {
+      attributes.forEach((attr: { [key: string]: string }) => {
+        element.setAttribute(attr.key, attr.value);
+      });
+    }
+
+    element.textContent = value.data;
+    return element;
+  } else if (value.type === 'comment') {
+    const comment = document.createComment(value.data);
+    return comment;
   }
-
-  const children = value.children;
-  if (Array.isArray(children)) {
-    const childNodes = children.map((child: TIndexableObject) => {
-      return nodeFactory(child, document);
-    });
-
-    element.append(...childNodes);
-  }
-
-  return element;
+  
+  throw new Error('Unknown node type.');
 }
 
 export default nodeFactory;
